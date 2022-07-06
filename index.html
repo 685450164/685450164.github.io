@@ -39,30 +39,50 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       // setup
-      const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      const labels = [
+        "100年",
+        "101年",
+        "102年",
+        "103年",
+        "104年",
+        "105年",
+        "106年",
+        "107年",
+        "108年",
+        "109年",
+      ];
       const data = {
         labels: labels,
         datasets: [
           {
-            label: "Weekly Sales",
-            data: [18, 12, 6, 9, 12, 3, 9],
+            label: "近十年我國醫療院所數",
+            data: [
+              21135, 21437, 21713, 22041, 22177, 22384, 22612, 22816, 22992,
+              23132,
+            ],
             backgroundColor: [
-              "rgba(255, 26, 104, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-              "rgba(0, 0, 0, 0.2)",
+              "rgba(191, 85, 63, 0.2)",
+              "rgba(191, 163, 63, 0.2)",
+              "rgba(170, 191, 63, 0.2)",
+              "rgba(93, 191, 63, 0.2)",
+              "rgba(63, 191, 178, 0.2)",
+              "rgba(63, 150, 191, 0.2)",
+              "rgba(63, 108, 191, 0.2)",
+              "rgba(119, 63, 191, 0.2)",
+              "rgba(195, 56, 208, 0.2)",
+              "rgba(208, 56, 107, 0.2)",
             ],
             borderColor: [
-              "rgba(255, 26, 104, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-              "rgba(0, 0, 0, 1)",
+              "rgba(191, 85, 63, 1)",
+              "rgba(191, 163, 63, 1)",
+              "rgba(170, 191, 63, 1)",
+              "rgba(93, 191, 63, 1)",
+              "rgba(63, 191, 178, 1)",
+              "rgba(63, 150, 191, 1)",
+              "rgba(63, 108, 191, 1)",
+              "rgba(119, 63, 191, 1)",
+              "rgba(195, 56, 208, 1)",
+              "rgba(208, 56, 107, 1)",
             ],
             borderWidth: 1,
           },
@@ -82,6 +102,30 @@
             beginAtZero: true,
           },
         },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 20,
+                weight: "bold",
+              },
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem, datasetIndex) {
+                //   var label = myChart.data.labels[tooltipItem.index];
+                var label = "醫療院所數";
+                var value =
+                  myChart.data.datasets[tooltipItem.datasetIndex].data[
+                    tooltipItem.dataIndex
+                  ];
+                value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return label + ":" + value + "所";
+              },
+            },
+          },
+        },
       };
 
       // config
@@ -91,13 +135,13 @@
         options: options,
       };
 
-      // render init block
-      // const myChart = new Chart(document.getElementById("myChart"), config);
-      //   https://codepen.io/DukeBoy200/pen/ExxMzMM
-      //   https://www.chartjs3.com/docs/chart/getting-started/
-      Chart.defaults.font.size = 16;
       const ctx = document.getElementById("myChart").getContext("2d");
       const myChart = new Chart(ctx, config);
+      // render init block
+      // const myChart = new Chart(document.getElementById("myChart"), config);
+      // https://codepen.io/DukeBoy200/pen/ExxMzMM
+      // https://www.chartjs3.com/docs/chart/getting-started/
+      // https://codepen.io/SitePoint/pen/Kpager
     </script>
   </body>
 </html>
