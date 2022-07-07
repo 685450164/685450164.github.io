@@ -11,9 +11,17 @@
         padding: 0;
         font-family: sans-serif;
       }
+
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgb(255, 255, 255);
+      }
+
       .chartCard {
         width: 100vw;
-        height: 100vh;
+        height: calc(100vh - 40px);
         background: rgba(255, 26, 104, 0.2);
         display: flex;
         align-items: center;
@@ -31,6 +39,9 @@
     </style>
   </head>
   <body>
+    <div class="chartMenu">
+      <h2>近十年我國醫療院所數</h2>
+    </div>
     <div class="chartCard">
       <div class="chartBox">
         <canvas id="myChart"></canvas>
@@ -40,22 +51,22 @@
     <script>
       // setup
       const labels = [
-        "100年",
-        "101年",
-        "102年",
-        "103年",
-        "104年",
-        "105年",
-        "106年",
-        "107年",
-        "108年",
-        "109年",
+        "100",
+        "101",
+        "102",
+        "103",
+        "104",
+        "105",
+        "106",
+        "107",
+        "108",
+        "109",
       ];
       const data = {
         labels: labels,
         datasets: [
           {
-            label: "近十年我國醫療院所數",
+            label: "醫療院所數",
             data: [
               21135, 21437, 21713, 22041, 22177, 22384, 22612, 22816, 22992,
               23132,
@@ -95,33 +106,44 @@
         scales: {
           x: {
             grid: {
-              display: false,
+              display: true,
+            },
+            title: {
+              display: true,
+              text: "年",
+              font: {
+                weight: "bold",
+              },
             },
           },
           y: {
             beginAtZero: true,
+            title: {
+              display: true,
+              text: "家",
+              font: {
+                weight: "bold",
+              },
+            },
           },
         },
         plugins: {
           legend: {
             labels: {
               font: {
-                size: 12,
+                size: 20,
                 weight: "bold",
               },
             },
           },
           tooltip: {
             callbacks: {
-              label: function (tooltipItem, datasetIndex) {
-                //   var label = myChart.data.labels[tooltipItem.index];
-                var label = "醫療院所數";
-                var value =
-                  myChart.data.datasets[tooltipItem.datasetIndex].data[
-                    tooltipItem.dataIndex
-                  ];
-                value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return label + ":" + value + "所";
+              title: function (context) {
+                return `${context[0].label}年`;
+              },
+              label: function (context) {
+                let label = `${context.dataset.label}:${context.formattedValue}家`;
+                return label;
               },
             },
           },
@@ -142,6 +164,7 @@
       // https://codepen.io/DukeBoy200/pen/ExxMzMM
       // https://www.chartjs3.com/docs/chart/getting-started/
       // https://codepen.io/SitePoint/pen/Kpager
+      // https://www.youtube.com/watch?v=K6bq6Dwzf1w
     </script>
   </body>
 </html>
