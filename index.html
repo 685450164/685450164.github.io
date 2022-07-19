@@ -113,7 +113,7 @@
                 //    .setMaxBounds([[26.534314, 123.608165], [21.447784, 117.681041]]);
 
                 L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
-                    attribution: '© <a href="http://www.nlsc.gov.tw/">內政部國土測繪中心</a> 貢獻'
+                    attribution: '© <a href="http://www.nlsc.gov.tw/">內政部國土測繪中心</a> 貢獻',maxZoom:18,zoomOffset:-1
                 }).addTo(map);
 
                 map.locate({ setView: true, maxZoom: 16 });
