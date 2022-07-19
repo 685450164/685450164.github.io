@@ -39,7 +39,7 @@
 
         .chartBox {
             width: 80vw;
-            height: 70vh;
+            height: 80vh;
             padding: 20px;
             border-radius: 20px;
             border: solid 3px rgba(255, 26, 104, 1);
@@ -48,7 +48,7 @@
 
         #map {
             width: 80vw;
-            height: 70vh;
+            height: 80vh;
         }
 
         .legend {
@@ -77,7 +77,7 @@
     </div>
     <script>
         let formatNumber = d3.format(",.1f");
-        d3.json("population.json").then((data) => {
+        d3.json("./json/population.json").then((data) => {
             data.forEach(function (d) {
                 d.year = d.year;
                 d.COUNTYNAME = d.COUNTYNAME;
@@ -92,7 +92,7 @@
 
             // console.log(population);
 
-            d3.json("taiwan.json").then((topoData) => {
+            d3.json("./json/taiwan.json").then((topoData) => {
                 // console.log(topoData);
                 let geoData = topojson.feature(topoData, topoData.objects.COUNTY_MOI_1090820);
                 // console.log(geoData);
@@ -102,23 +102,22 @@
 
                 // console.log(geoData);
 
-                //let map = L.map('map').fitWorld();
+                // let map = L.map('map').fitWorld();
 
-                //let map = L.map('map', {
-                    // center: [25.0375928, 121.5529563],
-                //    center: [23.7, 121.5529563],
-                //    zoom: 3
-                //});
-                let map = L.map('map', { minZoom: 8, maxZoom: 8 }).setView([23.7, 121.5529563], 8);
+                // let map = L.map('map', {
+                //     // center: [25.0375928, 121.5529563],
+                //     center: [23.7, 121.5529563],
+                //     zoom: 8
+                // });
+                // let map = L.map('map').setView([23.7, 121.5529563], 8);
+                let map = L.map('map', { minZoom: 8, maxZoom: 8 }).setView([23.7, 121.5529563], 8)
                     .setMaxBounds([[26.534314, 123.608165], [21.447784, 117.681041]]);
-                
-                //let map = L.map('map').setView([23.7, 121.5529563], 7);
 
                 L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
-                    attribution: '© <a href="http://www.nlsc.gov.tw/">內政部國土測繪中心</a> 貢獻',maxZoom:18,zoomOffset:-1
+                    attribution: '© <a href="http://www.nlsc.gov.tw/">內政部國土測繪中心</a> 貢獻'
                 }).addTo(map);
 
-                //map.locate({ setView: true, maxZoom: 16 });
+                map.locate({ setView: true, maxZoom: 16 });
 
                 L.geoJson(geoData).addTo(map);
 
@@ -190,7 +189,7 @@
                         click: zoomToFeature
                     });
 
-                    layer.bindTooltip(feature.properties.COUNTYNAME + '<br>' + formatNumber(feature.properties.population) + "千人");
+                    layer.bindTooltip(feature.properties.COUNTYNAME + '<br>' + '人口數:' + formatNumber(feature.properties.population) + "千人");
                 }
 
                 geojson = L.geoJson(geoData, {
