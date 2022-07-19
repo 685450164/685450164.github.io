@@ -1,164 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
 
-      .chartMenu {
-        width: 100vw;
-        height: 40px;
-        background: #1a1a1a;
-        color: rgb(255, 255, 255);
-      }
+        .chartMenu {
+            width: 100vw;
+            height: 40px;
+            background: #1a1a1a;
+            color: rgb(255, 255, 255);
+        }
 
-      .chartCard {
-        width: 100vw;
-        height: calc(100vh - 40px);
-        background: rgba(255, 26, 104, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+        .chartCard {
+            width: 100vw;
+            height: calc(100vh - 40px);
+            background: rgba(255, 26, 104, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      .chartBox {
-        width: 50%;
-        height: 50%;
-        padding: 20px;
-        border-radius: 20px;
-        border: solid 3px rgba(255, 26, 104, 1);
-        background: white;
-      }
+        .chartBox {
+            width: 80vw;
+            height: 80vh;
+            padding: 20px;
+            border-radius: 20px;
+            border: solid 3px rgba(255, 26, 104, 1);
+            background: white;
+        }
+
+        #map {
+            width: 80vw;
+            height: 80vh;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="chartMenu">
-      <h2>近十年我國醫療院所數</h2>
+        <h2>110年各縣市人口</h2>
     </div>
     <div class="chartCard">
-      <div class="chartBox">
-        <canvas id="myChart"></canvas>
-      </div>
+        <div class="chartBox">
+            <div id="map"></div>
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-      // setup
-      const labels = [
-        "100",
-        "101",
-        "102",
-        "103",
-        "104",
-        "105",
-        "106",
-        "107",
-        "108",
-        "109",
-      ];
-      const data = {
-        labels: labels,
-        datasets: [
-          {
-            label: "醫療院所數",
-            data: [
-              21135, 21437, 21713, 22041, 22177, 22384, 22612, 22816, 22992,
-              23132,
-            ],
-            backgroundColor: [
-              "rgba(191, 85, 63, 0.2)",
-              "rgba(191, 163, 63, 0.2)",
-              "rgba(170, 191, 63, 0.2)",
-              "rgba(93, 191, 63, 0.2)",
-              "rgba(63, 191, 178, 0.2)",
-              "rgba(63, 150, 191, 0.2)",
-              "rgba(63, 108, 191, 0.2)",
-              "rgba(119, 63, 191, 0.2)",
-              "rgba(195, 56, 208, 0.2)",
-              "rgba(208, 56, 107, 0.2)",
-            ],
-            borderColor: [
-              "rgba(191, 85, 63, 1)",
-              "rgba(191, 163, 63, 1)",
-              "rgba(170, 191, 63, 1)",
-              "rgba(93, 191, 63, 1)",
-              "rgba(63, 191, 178, 1)",
-              "rgba(63, 150, 191, 1)",
-              "rgba(63, 108, 191, 1)",
-              "rgba(119, 63, 191, 1)",
-              "rgba(195, 56, 208, 1)",
-              "rgba(208, 56, 107, 1)",
-            ],
-            borderWidth: 1,
-          },
-        ],
-      };
 
-      const options = {
-        maintainAspectRatio: false,
-        // responsive: true,
-        scales: {
-          x: {
-            grid: {
-              display: true,
-            },
-            title: {
-              display: true,
-              text: "年",
-              font: {
-                weight: "bold",
-              },
-            },
-          },
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: "家",
-              font: {
-                weight: "bold",
-              },
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            labels: {
-              font: {
-                size: 20,
-                weight: "bold",
-              },
-            },
-          },
-          tooltip: {
-            callbacks: {
-              title: function (context) {
-                return `${context[0].label}年`;
-              },
-              label: function (context) {
-                let label = `${context.dataset.label}:${context.formattedValue}家`;
-                return label;
-              },
-            },
-          },
-        },
-      };
+        d3.json("./json/population.json").then((data) => {
+            data.forEach(function (d) {
+                d.year = d.year;
+                d.COUNTYNAME = d.COUNTYNAME;
+                d.value = +d.value / 1000;
+            });
+            // console.log(data);
 
-      // config
-      const config = {
-        type: "bar",
-        data: data,
-        options: options,
-      };
+            let population = [];
+            for (var i = 0; i < data.length; i++) {
+                population[data[i].COUNTYNAME] = data[i].value;
+            }
 
-      const ctx = document.getElementById("myChart").getContext("2d");
-      const myChart = new Chart(ctx, config);
+            // console.log(population);
+
+            d3.json("./json/taiwan.json").then((topoData) => {
+                // console.log(topoData);
+                let geoData = topojson.feature(topoData, topoData.objects.COUNTY_MOI_1090820);
+                // console.log(geoData);
+                for (var i = 0; i < geoData.features.length; i++) {
+                    geoData.features[i].properties.population = population[geoData.features[i].properties.COUNTYNAME];
+                }
+
+                // console.log(geoData);
+
+                let map = L.map('map').fitWorld();
+                L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+                    maxZoom: 20,
+                    attribution: '© <a href="http://www.nlsc.gov.tw/">內政部國土測繪中心</a> 貢獻'
+                }).addTo(map);
+
+                map.locate({ setView: true, maxZoom: 16 });
+
+                L.geoJson(geoData).addTo(map);
+
+                // function getColor(d) {
+                //     return d > 400 ? '#FC4E2A' :
+                //         d > 300 ? '#FD8D3C' :
+                //             d > 200 ? '#FEB24C' :
+                //                 d > 100 ? '#FED976' :
+                //                     '#FFEDA0';
+                // }
+
+                // function style(feature) {
+                //     return {
+                //         fillColor: getColor(feature.properties.population),
+                //         weight: 2,
+                //         opacity: 1,
+                //         color: 'white',
+                //         dashArray: '3',
+                //         fillOpacity: 0.7
+                //     };
+                // }
+
+                // L.geoJson(geoData, { style: style }).addTo(map);
+
+
+            })
+        })
+        //https://www.cs.nccu.edu.tw/~mtchi/course/vis21/
     </script>
-  </body>
+</body>
+
 </html>
