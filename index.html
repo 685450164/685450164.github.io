@@ -64,7 +64,7 @@
     </div>
     <script>
 
-        d3.json("./json/population.json").then((data) => {
+        d3.json("population.json").then((data) => {
             data.forEach(function (d) {
                 d.year = d.year;
                 d.COUNTYNAME = d.COUNTYNAME;
@@ -79,7 +79,7 @@
 
             // console.log(population);
 
-            d3.json("./json/taiwan.json").then((topoData) => {
+            d3.json("taiwan.json").then((topoData) => {
                 // console.log(topoData);
                 let geoData = topojson.feature(topoData, topoData.objects.COUNTY_MOI_1090820);
                 // console.log(geoData);
