@@ -142,20 +142,20 @@
 
                 L.geoJson(geoData, { style: style }).addTo(map);
 
-                // let onLocationFound = (e) => {
-                //     let radius = e.accuracy;
+                let onLocationFound = (e) => {
+                    let radius = e.accuracy;
 
-                //     L.marker(e.latlng).addTo(map)
-                //         .bindPopup("You are within " + radius + " meters from this point").openPopup();
+                    L.marker(e.latlng).addTo(map)
+                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-                //     L.circle(e.latlng, radius).addTo(map);
-                // }
-                // map.on('locationfound', onLocationFound);
+                    L.circle(e.latlng, radius).addTo(map);
+                }
+                map.on('locationfound', onLocationFound);
 
-                // let onLocationError = (e) => {
-                //     alert(e.message);
-                // }
-                // map.on('locationerror', onLocationError);
+                let onLocationError = (e) => {
+                    alert(e.message);
+                }
+                map.on('locationerror', onLocationError);
 
                 let highlightFeature = (e) => {
                     let layer = e.target;
